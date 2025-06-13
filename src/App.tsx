@@ -19,7 +19,8 @@ function App() {
     getPosts(page, PAGE_SIZE, (page - 1) * PAGE_SIZE).then(posts => {
       setPosts(prev => [...prev, ...posts]);
       setHasMorePosts(posts.length === PAGE_SIZE);
-    });;
+      console.log(posts)
+    });
   }, [page]);
 
   useEffect(() => {

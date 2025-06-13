@@ -4,7 +4,7 @@ import type { PostReactions } from "../models"
 const PostFooter = ({ reactions, views }: { reactions: PostReactions, views: number }) => {
     return (
         <div className="mt-2 text-sm text-gray-500">
-            <div className="flex items-center justify-between gap-2 opacity-80 hover:opacity-100 transition-opacity duration-300">
+            <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1">
                     {views}
                     <Eye className="size-4 mr-1" />

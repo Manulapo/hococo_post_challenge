@@ -8,6 +8,18 @@ export const tagPillsColorScheme: Record<string, Record<string, string>> = {
     magical: { text: 'text-pink-900', bg: 'bg-pink-100' },
     mystery: { text: 'text-orange-900', bg: 'bg-orange-100' },
     love: { text: 'text-rose-900', bg: 'bg-rose-100' },
-    classic: { text: 'text-cyan-900', bg: 'bg-cyan-100' },
+    classic: { text: 'text-gray-900', bg: 'bg-gray-100' },
 };
 
+export const tailwindColors : string = [
+  "yellow",
+  "blue",
+  "red",
+  "purple",
+  "green",
+  "teal",
+  "pink",
+  "orange",
+  "rose",
+  "gray",
+];
