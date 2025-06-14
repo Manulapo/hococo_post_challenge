@@ -13,6 +13,7 @@ const PAGE_SIZE = 20;
 
 function Home() {
     const [posts, setPosts] = useState<Post[]>([]);
+    const [localPost, setLocalPost] = useState<Post[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [page, setPage] = useState(1);
     const [hasMorePosts, setHasMorePosts] = useState(true);
@@ -46,6 +47,7 @@ function Home() {
             isLocallyAdded: true,
         }
         setPosts((prev) => [locallyAddedPost, ...prev]);
+        setLocalPost((prev) => [locallyAddedPost, ...prev]);
     };
 
     // update post
@@ -57,6 +59,9 @@ function Home() {
 
     // filter post deleted
     const handleDeletedPost = (postId: number) => {
+        if (localPost.length > 0) {
+            setLocalPost((prev) => prev.filter((post) => post.id !== postId));
+        }
         setPosts((prev) => prev.filter((post) => post.id !== postId));
     };
 
@@ -67,10 +72,10 @@ function Home() {
         searchResult = locallyPostMatchesSearch(searchQuery);
         if (searchResult.length > 0) {
             searchResult = [...searchResult, ...postsFound];
-        }else{
+        } else {
             searchResult = [...postsFound];
         }
-        
+
         setPosts(searchResult);
         setHasMorePosts(false);
     };
@@ -79,6 +84,9 @@ function Home() {
     const handleResetSearch = async (isSearchCleared: boolean) => {
         if (!isSearchCleared) return;
         await getPosts(1, PAGE_SIZE, 0).then(posts => {
+            if (localPost.length > 0) {
+                posts = [...localPost, ...posts];
+            }
             setPosts(posts);
             setPage(1);
             setHasMorePosts(posts.length === PAGE_SIZE);
