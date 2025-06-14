@@ -30,6 +30,7 @@ I was provided this
 ## Tools Used
 
 - React (with Vite)
+- Typescript
 - Tailwind CSS for the styling
 
 ## How i proceded
