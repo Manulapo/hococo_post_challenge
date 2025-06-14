@@ -15,7 +15,8 @@ const PostForm = ({ post, setOpenModal, onUpdate, onCreate, onDelete }: {
         title: post?.title || '',
         body: post?.body || '',
         tags: post?.tags || [],
-        reactions: post?.reactions || { likes: 0, dislikes: 0},
+        reactions: post?.reactions || { likes: 0, dislikes: 0 },
+        isLocallyAdded: post?.isLocallyAdded || false,
         views: post?.views || 0,
         userId: post?.userId || 1
     });
@@ -23,13 +24,11 @@ const PostForm = ({ post, setOpenModal, onUpdate, onCreate, onDelete }: {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (post) {
-            const updatedPost = await updatePost(postData as Post);
-            // state lifter
-            onUpdate?.(updatedPost);
+            const updatedPost = post.isLocallyAdded ? postData : await updatePost(postData as Post);
+            onUpdate?.(updatedPost); // state lifter
         } else {
             const newPost = await addNewPost(postData as NewPost);
-            // state lifter
-            onCreate?.(newPost);
+            onCreate?.(newPost); // state lifter
         }
         setOpenModal(false);
     }
@@ -37,9 +36,9 @@ const PostForm = ({ post, setOpenModal, onUpdate, onCreate, onDelete }: {
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault();
         if (post && post.id) {
-            await deletePost(post.id)
-            // state lifter
-            onDelete?.(post.id);
+            const deletedPost = post.isLocallyAdded ? post : await deletePost(post.id);
+            
+            onDelete?.(deletedPost.id); // state lifter
             setOpenModal(false);
         } else {
             console.error('Post not found or invalid ID');

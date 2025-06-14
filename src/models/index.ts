@@ -11,6 +11,7 @@ export interface Post {
     reactions: PostReactions;
     views: number;
     userId: number;
+    isLocallyAdded?: boolean; 
 }
 
 export type NewPost = Omit<Post, 'id'>;

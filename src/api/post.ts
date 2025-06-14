@@ -130,3 +130,25 @@ export const deletePost = async (id: number) => {
     return false;
   }
 }
+
+export const searchPosts = async (query: string) => {
+  if (!query) {
+    console.error('Search query is empty');
+    return [];
+  }
+
+  try {
+    const response = await fetch(`${URL}/search?q=${query}`);
+
+    if (!response.ok) {
+      throw new Error('Error searching posts');
+    }
+
+    const data = await response.json();
+    return data.posts;
+
+  } catch (error) {
+    console.error('Failed to search posts:', error);
+    return [];
+  }
+}
