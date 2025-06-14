@@ -61,12 +61,17 @@ function Home() {
     };
 
     // search posts
-    const handlePostSearch = (postsFound: Post[]) => {
+    const handlePostSearch = (postsFound: Post[], searchQuery: string) => {
         setPosts([]);
-        if (postsFound.length === 0) {
-            return;
+        let searchResult = [];
+        searchResult = locallyPostMatchesSearch(searchQuery);
+        if (searchResult.length > 0) {
+            searchResult = [...searchResult, ...postsFound];
+        }else{
+            searchResult = [...postsFound];
         }
-        setPosts(postsFound);
+        
+        setPosts(searchResult);
         setHasMorePosts(false);
     };
 
@@ -78,6 +83,16 @@ function Home() {
             setPage(1);
             setHasMorePosts(posts.length === PAGE_SIZE);
         });
+    }
+
+    const locallyPostMatchesSearch = (searchQuery: string) => {
+        const localMatches: Post[] = []
+        posts.forEach((post) => {
+            if (post.isLocallyAdded && (post.title.includes(searchQuery) || post.body.includes(searchQuery))) {
+                localMatches.push(post);
+            }
+        })
+        return localMatches;
     }
 
     return (

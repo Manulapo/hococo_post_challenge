@@ -3,7 +3,7 @@ import { searchPosts } from "../api/post";
 import type { Post } from "../models";
 import { Search, X } from "lucide-react";
 
-const SearchPosts = ({ onSearch, onDeleteFilter }: { onSearch: (postsFound: Post[]) => void, onDeleteFilter: (isSearchCleared:boolean) => void }) => {
+const SearchPosts = ({ onSearch, onDeleteFilter }: { onSearch: (postsFound: Post[], searchQuery: string) => void, onDeleteFilter: (isSearchCleared: boolean) => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [queryText, setQueryText] = useState("");
 
@@ -15,7 +15,7 @@ const SearchPosts = ({ onSearch, onDeleteFilter }: { onSearch: (postsFound: Post
       return;
     }
     const postFound = await searchPosts(searchQuery);
-    onSearch?.(postFound)
+    onSearch?.(postFound, searchQuery) // state lifter
     setSearchQuery("");
     setQueryText(searchQuery);
   }
@@ -24,7 +24,7 @@ const SearchPosts = ({ onSearch, onDeleteFilter }: { onSearch: (postsFound: Post
   const handleDeleteFilter = () => {
     setQueryText("");
     setSearchQuery("");
-    onDeleteFilter?.(true);
+    onDeleteFilter?.(true); // state lifter
   }
 
   return (
@@ -48,9 +48,9 @@ const SearchPosts = ({ onSearch, onDeleteFilter }: { onSearch: (postsFound: Post
         </div>
       </form>
       {queryText && <p className="text-sm text-gray-500 mb-5 flex items-center gap-2">
-        Displayed results for <span className=" flex w-max  items-center gap-2 font-semibold bg-gray-200 rounded-full px-3 py-1">{queryText} 
-          <X className="size-4 cursor-pointer" onClick={handleDeleteFilter}/>
-          </span>
+        Displayed results for <span className=" flex w-max  items-center gap-2 font-semibold bg-gray-200 rounded-full px-3 py-1">{queryText}
+          <X className="size-4 cursor-pointer" onClick={handleDeleteFilter} />
+        </span>
       </p>}
     </div >
   )
